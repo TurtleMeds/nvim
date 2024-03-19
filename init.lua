@@ -44,6 +44,9 @@ P.S. You can delete this when you're done too. It's your config now :)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+-- Set dark mode
+vim.o.background = "dark"
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
@@ -72,7 +75,12 @@ require('lazy').setup({
   -- Git related plugins
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
-
+  -- game to make you better at motions
+  'ThePrimeagen/vim-be-good',
+  -- Autosave
+  'pocco81/auto-save.nvim',
+  -- rename files
+  'tpope/vim-eunuch',
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
 
@@ -97,6 +105,19 @@ require('lazy').setup({
     },
   },
 
+  {
+    'preservim/vim-markdown',
+    dependencies = {
+      'godlygeek/tabular',
+    },
+  },
+  
+  {
+    'kaarmu/typst.vim',
+    ft = 'typst',
+    lazy = false,
+  },
+  
   {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
@@ -204,11 +225,11 @@ require('lazy').setup({
   },
 
   {
-    -- Theme inspired by Atom
-    'navarasu/onedark.nvim',
+    -- Theme
+    'ellisonleao/gruvbox.nvim',
     priority = 1000,
     config = function()
-      vim.cmd.colorscheme 'onedark'
+      vim.cmd.colorscheme 'gruvbox'
     end,
   },
 
@@ -219,7 +240,7 @@ require('lazy').setup({
     opts = {
       options = {
         icons_enabled = false,
-        theme = 'onedark',
+        theme = 'gruvbox',
         component_separators = '|',
         section_separators = '',
       },
@@ -302,7 +323,7 @@ require('lazy').setup({
 vim.o.hlsearch = false
 
 -- Make line numbers default
-vim.wo.number = true
+vim.o.number = true
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
@@ -323,7 +344,7 @@ vim.o.ignorecase = true
 vim.o.smartcase = true
 
 -- Keep signcolumn on by default
-vim.wo.signcolumn = 'yes'
+vim.wo.signcolumn = 'number'
 
 -- Decrease update time
 vim.o.updatetime = 250
@@ -352,9 +373,15 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open float
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
 -- FloatTerm keymaps
-vim.keymap.set('n', "<leader>ft", ":FloatermNew --name=myfloat --height=0.8 --width=0.7 --autoclose=2 powershell <CR> ")
+vim.keymap.set('n', "<leader>ft", ":FloatermNew --name=myfloat --height=0.8 --width=0.7 --autoclose=2 fish <CR> ")
 vim.keymap.set('n', "t", ":FloatermToggle myfloat<CR>")
 vim.keymap.set('t', "<Esc>", "<C-\\><C-n>:q<CR>")
+
+-- MarkDown 
+vim.keymap.set('n', "<leader>s", ":TableFormat <CR>")
+
+-- Control-s to save
+vim.keymap.set('n', "<C-s>", ":w <CR>")
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -365,6 +392,20 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
   group = highlight_group,
   pattern = '*',
+})
+
+-- [[ Configure gruvbox ]]
+require("gruvbox").setup({
+	overrides = {
+		SignColumn = { link = "Normal" },
+		GruvboxGreenSign = { bg = "" },
+		GruvboxOrangeSign = { bg = "" },
+		GruvboxPurpleSign = { bg = "" },
+		GruvboxYellowSign = { bg = "" },
+		GruvboxRedSign = { bg = "" },
+		GruvboxBlueSign = { bg = "" },
+		GruvboxAquaSign = { bg = "" },
+	},
 })
 
 -- [[ Configure Telescope ]]
@@ -379,6 +420,9 @@ require('telescope').setup {
     },
   },
 }
+
+-- [[ Configure typst ]]
+vim.g.typst_pdf_viewer = 'zathura'
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
