@@ -1,43 +1,3 @@
---[[
-
-=====================================================================
-==================== READ THIS BEFORE CONTINUING ====================
-=====================================================================
-
-Kickstart.nvim is *not* a distribution.
-
-Kickstart.nvim is a template for your own configuration.
-  The goal is that you can read every line of code, top-to-bottom, understand
-  what your configuration is doing, and modify it to suit your needs.
-
-  Once you've done that, you should start exploring, configuring and tinkering to
-  explore Neovim!
-
-  If you don't know anything about Lua, I recommend taking some time to read through
-  a guide. One possible example:
-  - https://learnxinyminutes.com/docs/lua/
-
-
-  And then you can explore or search through `:help lua-guide`
-  - https://neovim.io/doc/user/lua-guide.html
-
-
-Kickstart Guide:
-
-I have left several `:help X` comments throughout the init.lua
-You should run that command and read that help section for more information.
-
-In addition, I have some `NOTE:` items throughout the file.
-These are for you, the reader to help understand what is happening. Feel free to delete
-them once you know what you're doing, but they should serve as a guide for when you
-are first encountering a few different constructs in your nvim config.
-
-I hope you enjoy your Neovim journey,
-- TJ
-
-P.S. You can delete this when you're done too. It's your config now :)
---]]
-
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
@@ -77,8 +37,6 @@ require('lazy').setup({
   'tpope/vim-rhubarb',
   -- game to make you better at motions
   'ThePrimeagen/vim-be-good',
-  -- Autosave
-  'pocco81/auto-save.nvim',
   -- rename files
   'tpope/vim-eunuch',
   -- Detect tabstop and shiftwidth automatically
@@ -111,13 +69,13 @@ require('lazy').setup({
       'godlygeek/tabular',
     },
   },
-  
+
   {
     'kaarmu/typst.vim',
     ft = 'typst',
     lazy = false,
   },
-  
+
   {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
@@ -319,11 +277,20 @@ require('lazy').setup({
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
 
+-- set scrolloff distance
+vim.o.scrolloff = 30
+
 -- Set highlight on search
-vim.o.hlsearch = false
+vim.o.hlsearch = true
+
+-- don't show the mode, its already in the statusbar
+vim.o.showmode = false
 
 -- Make line numbers default
 vim.o.number = true
+
+-- make relative numbers default
+vim.o.relativenumber = true
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
@@ -373,15 +340,23 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open float
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
 -- FloatTerm keymaps
-vim.keymap.set('n', "<leader>ft", ":FloatermNew --name=myfloat --height=0.8 --width=0.7 --autoclose=2 fish <CR> ")
-vim.keymap.set('n', "t", ":FloatermToggle myfloat<CR>")
+vim.keymap.set('n', "<leader>ft", "<cmd>FloatermNew --name=myfloat --height=0.8 --width=0.7 --autoclose=2 fish <CR> ")
+vim.keymap.set('n', "t", "<cmd>FloatermToggle myfloat<CR>")
 vim.keymap.set('t', "<Esc>", "<C-\\><C-n>:q<CR>")
 
 -- MarkDown 
-vim.keymap.set('n', "<leader>s", ":TableFormat <CR>")
+vim.keymap.set('n', "<leader>s", "<cmd>TableFormat <CR>")
 
 -- Control-s to save
-vim.keymap.set('n', "<C-s>", ":w <CR>")
+vim.keymap.set('n', "<C-s>", "<cmd>w <CR>")
+
+-- esc to exit search highlight
+vim.keymap.set('n', "<Esc>", "<cmd>nohlsearch<CR>")
+
+-- add hyprlang file detection
+vim.filetype.add({
+  pattern = { [".*/hypr/.*%.conf"] = "hyprlang" },
+})
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -487,7 +462,7 @@ vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { des
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
-vim.keymap.set('n', '<leader>sG', ':LiveGrepGitRoot<cr>', { desc = '[S]earch by [G]rep on Git Root' })
+vim.keymap.set('n', '<leader>sG', '<cmd>LiveGrepGitRoot<cr>', { desc = '[S]earch by [G]rep on Git Root' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
 
