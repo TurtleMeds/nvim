@@ -47,9 +47,6 @@ vim.o.number = true
 -- make relative numbers default
 vim.o.relativenumber = true
 
--- Enable mouse mode
-vim.o.mouse = 'a'
-
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
@@ -82,7 +79,7 @@ vim.o.completeopt = 'menuone,noselect'
 vim.o.title = true
 
 -- stop annoying fold
-vim.o.nofoldenable = true
+vim.o.foldenable = false
 
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true

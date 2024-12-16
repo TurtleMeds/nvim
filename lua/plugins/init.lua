@@ -47,9 +47,10 @@ return {
   },
 
   {
-    'kaarmu/typst.vim',
-    ft = 'typst',
-    lazy = false,
+    'chomosuke/typst-preview.nvim',
+    lazy = false, -- or ft = 'typst'
+    version = '1.*',
+    opts = {}, -- lazy.nvim will implicitly calls `setup {}`
   },
 
   {
@@ -57,6 +58,9 @@ return {
     cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
     ft = { "markdown" },
     build = function() vim.fn["mkdp#util#install"]() end,
+    config = function ()
+      vim.g.mkdp_auto_start = 1
+    end
   },
 
   {
@@ -201,15 +205,15 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
   },
 
-  --{
+  {
     -- Theme
-    --'ellisonleao/gruvbox.nvim',
-    --lazy = false,
-    --priority = 1000,
+    'ellisonleao/gruvbox.nvim',
+    lazy = false,
+    priority = 1000,
     --config = function()
     --  vim.cmd([[colorscheme gruvbox]])
     --end,
-  --},
+  },
 
   {
     'AlphaTechnolog/pywal.nvim',
